@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+import random
+
+def getFactors(n):
+    factors = []
+
+    for i in range(1, n+1):
+        if n % i == 0:
+            factors.append(i)
+    return factors
+
+number = random.randint(10, 50)
+
+def isPrime(n):
+    if len(getFactors(n)) == 2:
+        return True
+    else:
+        return False
+
+tries = 0
+index = 1
+hintsUsed = 0
+win = False
+hasHints = True
+
+
+name = input("Hello, What is your username? ")
+
+print("Hello " + name + ".")
+
+question = input("Would you like to play a game? [Y/N] ")
+if question.lower() == "n":
+    print("oh..okay")
+    exit()
+if question.lower() == "y":
+    print("I'm thinking of a number between 10 & 50.")
+while not win:
+    guess = int(input("Have a guess: "))
+    tries += 1
+    if guess == number:
+        win = True    # set win to true when the user guesses correctly.
+    elif guess < number:
+        print("Guess Higher")
+    elif guess > number:
+        print("Guess Lower")
+
+    if tries > 1 and win is False and hasHints is True:
+        hint = input("Would you like a hint? [Y/N]")
+        if hint.lower() == "y":
+            if getFactors(number)[index] == number and len(getFactors(number)) > 2:
+                print("Sorry, you are out of hints :(")
+                hasHints = False
+            else:
+                hintsUsed += 1
+                if not isPrime(number):
+                    print("The number has a factor of " + str(getFactors(number)[index]))
+                    index += 1
+                else:
+                    print("The number is prime")
+
+print("Congrats, you guessed correctly. The number was indeed {}".format(number))
+print("It took you {} tries".format(tries) + " and you used {} hints".format(hintsUsed))
